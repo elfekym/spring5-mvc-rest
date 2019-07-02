@@ -1,11 +1,11 @@
 package guru.springframework.Domain;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @Entity
