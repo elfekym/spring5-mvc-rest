@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.Domain.Customer;
 import guru.springframework.api.v1.mapper.CustomerMapper;
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.repositories.CustomerRepository;
@@ -39,5 +40,32 @@ public class CustomerServiceImpl implements CustomerService {
                 .findById(id)
                 .map(customerMapper::customerToCustomerDTO)
                 .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+        Customer savedCustomer = customerRepository.save(customer);
+        CustomerDTO returnedCustomer = customerMapper.customerToCustomerDTO(savedCustomer);
+        returnedCustomer.setCustomerURL("/api/v1/customers/" + savedCustomer.getId());
+
+        return returnedCustomer;
+    }
+
+    @Override
+    public CustomerDTO saveCustomer(Long id, CustomerDTO customerDTO) {
+        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+        customer.setId(id);
+
+        return saveAndReturnDTO(customer);
+    }
+    private CustomerDTO saveAndReturnDTO(Customer customer) {
+        Customer savedCustomer = customerRepository.save(customer);
+
+        CustomerDTO returnDto = customerMapper.customerToCustomerDTO(savedCustomer);
+
+        returnDto.setCustomerURL("/api/v1/customer/" + savedCustomer.getId());
+
+        return returnDto;
     }
 }
