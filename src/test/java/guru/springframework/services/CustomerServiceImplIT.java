@@ -6,6 +6,7 @@ import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.bootstrap.Bootstrap;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.CustomerRepository;
+import guru.springframework.repositories.VendorRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,9 @@ public class CustomerServiceImplIT {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerService customerService;
 
     @Before
@@ -37,7 +41,7 @@ public class CustomerServiceImplIT {
         System.out.println(customerRepository.findAll().size());
 
         //setup data for testing
-        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository);
+        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
         bootstrap.run(); //load data
 
         customerService = new CustomerServiceImpl(customerRepository, CustomerMapper.INSTANCE);
